@@ -44,6 +44,18 @@ Tools (Tomcat)            | Versions
 Tomcat                    | 9.0.58
 Openjre                   | 8.131
 
+## Ongoing Tests
+
+Tested on September 09, 2024 : 
+- Steps during vagrant initialization for Jenkins-Ubuntu-VM.
+$ vagrant up
+
+![Jenkins](images/JenkinsVM.png)
+
+- Steps during vagrant initialization for Tomcat-Ubuntu-VM.
+$ vagrant up
+
+![Tomcat](images/TomcatVM.png)
 
 ## Issues and troubleshooting
 
