@@ -33,16 +33,16 @@ Tomcat        | 172.17.8.164    | bento/ubuntu-20.04
 
 Tools (Jenkins)           | Versions
 --------------------------|-------
-Jenkins                   | 2.336
+Jenkins                   | 2.462.2
 Git                       | 2.25.1
-Openjdk                   | 11
+Openjdk                   | 17
 
 - Tomcat node
 
 Tools (Tomcat)            | Versions
 --------------------------|-------
-Tomcat                    | 9.0.58
-Openjre                   | 8.131
+Tomcat                    | 9.0.93
+Openjre                   | 17
 
 ## Ongoing Tests
 
