@@ -5,7 +5,7 @@
 ### Link: https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-8-on-centos-7
 ## Var definitions
 # Check the updated version here -> https://dlcdn.apache.org/tomcat/tomcat-9
-TOMCAT_VERSION="9.0.80"
+TOMCAT_VERSION="9.0.93"
 
 
 ## First install wget
@@ -111,6 +111,8 @@ echo '
          allow="127\.\d+\.\d+\.\d+|::1|0:0:0:0:0:0:0:1" />
 -->
 </Context> '  >  /usr/local/tomcat/webapps/host-manager/META-INF/context.xml
+
+echo "***Starting Tomcat Server***"
 
 systemctl start tomcat
 systemctl enable tomcat

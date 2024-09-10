@@ -3,8 +3,8 @@
 #echo "nameserver 8.8.8.8" | sudo tee /etc/resolv.conf > /dev/null
 echo "Adding apt-keys"
 #Sync up this part of file with https://pkg.jenkins.io/debian-stable
-curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee \
-    /usr/share/keyrings/jenkins-keyring.asc > /dev/null
+sudo wget -O /usr/share/keyrings/jenkins-keyring.asc \
+    https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key
 
 sudo echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
     https://pkg.jenkins.io/debian-stable binary/ | sudo tee \
@@ -13,9 +13,9 @@ sudo echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] \
 echo "Updating apt-get"
 sudo apt-get -y update 
 echo "Installing openjdk-jdk"
-sudo apt-get install -y openjdk-11-jdk 
+sudo apt-get install -y openjdk-17-jdk 
 echo "Installing openjdk-jre"
-sudo apt-get install -y fontconfig openjdk-11-jre 
+sudo apt-get install -y fontconfig openjdk-17-jre 
 echo "Installing git"
 sudo apt-get -y install git > /dev/null 2>&1
 echo "Installing git-ftp"
