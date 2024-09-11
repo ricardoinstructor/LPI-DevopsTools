@@ -27,7 +27,7 @@ Node1         | 172.122.1.25    | bento/ubuntu-20.04
 
 Tools (Node1)             | Versions
 --------------------------|-------
-Docker                    | 20.10.8
+Docker                    | 27.2.1
 Packer                    | 1.11.2
 
 ## Ongoing Tests
