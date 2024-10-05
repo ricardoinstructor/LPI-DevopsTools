@@ -1,15 +1,52 @@
 
 # Vagrantfile and Scripts to Automate Kubernetes Setup using Kubeadm [Practice Environment for CKA/CKAD and CKS Exams]
 
+A fully automated setup for CKA, CKAD, and CKS practice labs is tested on the following systems:
+
+- Windows
+- Ubuntu Desktop
+- Mac Intel-based systems
+
+If you are MAC Silicon user, Please use the follwing repo.
+
+- [Vagrant Kubeadm Setup on MAC Silicon](https://github.com/techiescamp/vagrant-kubeadm-mac-silicon)
+
+## Kubernetes Certification Coupon (40% OFF) 🎉
+
+As part of our commitment to helping the DevOps community save money on Kubernetes Certifications, we continuously update the latest voucher codes from the Linux Foundation
+
+🚀  CKA, CKAD, CKS, or KCNA exam aspirants can **save 30%** today using code **30COMTECHIES** at https://kube.promo/devops. It is a limited-time offer from the Linux Foundation.
+
+The following are the best bundles to **save 40% (up to $788)** with code **30COMTECHIES**
+
+- KCNA + KCSA + CKA + CKAD + CKS ($788 Savings): [kube.promo/kubestronaut](https://kube.promo/kubestronaut)
+- CKA + CKAD + CKS Exam bundle ($528 Savings): [kube.promo/k8s-bundle](https://kube.promo/k8s-bundle)
+- CKA + CKS Bundle ($355 Savings) [kube.promo/bundle](https://kube.promo/bundle)
+- KCNA + CKA ( $288 Savings) [kube.promo/kcka-bundle](https://kube.promo/kcna-cka)
+- KCSA + CKS Exam Bundle ($229 Savings) [kube.promo/kcsa-cks](https://kube.promo/kcsa-cks)
+- KCNA + KCSA Exam Bundle ($203 Savings) [kube.promo/kcna-kcsa](https://kube.promo/kcna-kcsa)
+
+>Note: You have one year of validity to appear for the certification exam after registration
+
+## Setup Prerequisites
+
+- A working Vagrant setup using Vagrant + VirtualBox
+
+Here is the high level workflow.
+
+
+<p align="center">
+  <img src="https://github.com/user-attachments/assets/cc5594b5-42c2-4c56-be21-6441f849f537" width="65%" />
+</p>
+
 ## Documentation
 
-Current k8s version for CKA, CKAD and CKS exam: 1.26
+Current k8s version for CKA, CKAD, and CKS exam: 1.30
 
-Refer this link for documentation: https://devopscube.com/kubernetes-cluster-vagrant/
+The setup is updated with 1.31 cluster version.
 
-## 🚀 CKA, CKAD, CKS or KCNA Coupon Codes
+Refer to this link for documentation full: https://devopscube.com/kubernetes-cluster-vagrant/
 
-If you are preparing for CKA, CKAD, CKS, or KCNA exam, **save 20%** today using code **SCRIPT20** at https://kube.promo/devops. It is a limited-time offer. Or Check out [Linux Foundation coupon](https://scriptcrunch.com/linux-foundation-coupon/) page for the latest voucher codes.
 
 ## Prerequisites
 
@@ -18,9 +55,9 @@ If you are preparing for CKA, CKAD, CKS, or KCNA exam, **save 20%** today using 
 
 ## For MAC/Linux Users
 
-Latest version of Virtualbox for Mac/Linux can cause issues.
+The latest version of Virtualbox for Mac/Linux can cause issues.
 
-Create/edit the /etc/vbox/networks.conf file and add the following to avoid any network related issues.
+Create/edit the /etc/vbox/networks.conf file and add the following to avoid any network-related issues.
 <pre>* 0.0.0.0/0 ::/0</pre>
 
 or run below commands
@@ -62,7 +99,7 @@ The dashboard is automatically installed by default, but it can be skipped by co
 
 If you skip the dashboard installation, you can deploy it later by enabling it in _settings.yaml_ and running the following:
 ```shell
-vagrant ssh -c "/vagrant/scripts/dashboard.sh" master
+vagrant ssh -c "/vagrant/scripts/dashboard.sh" controlplane
 ```
 
 ## Kubernetes Dashboard Access
@@ -72,14 +109,14 @@ To get the login token, copy it from _config/token_ or run the following command
 kubectl -n kubernetes-dashboard get secret/admin-user -o go-template="{{.data.token | base64decode}}"
 ```
 
-Proxy the dashboard:
+Make the dashboard accessible:
 ```shell
 kubectl proxy
 ```
 
 Open the site in your browser:
 ```shell
-http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/overview?namespace=kubernetes-dashboard
+http://localhost:8001/api/v1/namespaces/kubernetes-dashboard/services/https:kubernetes-dashboard:/proxy/#/login
 ```
 
 ## To shutdown the cluster,
@@ -99,4 +136,44 @@ vagrant up
 ```shell
 vagrant destroy -f
 ```
+# Network graph
 
+```
+                  +-------------------+
+                  |    External       |
+                  |  Network/Internet |
+                  +-------------------+
+                           |
+                           |
+             +-------------+--------------+
+             |        Host Machine        |
+             |     (Internet Connection)  |
+             +-------------+--------------+
+                           |
+                           | NAT
+             +-------------+--------------+
+             |    K8s-NATNetwork          |
+             |    192.168.99.0/24         |
+             +-------------+--------------+
+                           |
+                           |
+             +-------------+--------------+
+             |     k8s-Switch (Internal)  |
+             |       192.168.99.1/24      |
+             +-------------+--------------+
+                  |        |        |
+                  |        |        |
+          +-------+--+ +---+----+ +-+-------+
+          |  Master  | | Worker | | Worker  |
+          |   Node   | | Node 1 | | Node 2  |
+          |192.168.99| |192.168.| |192.168. |
+          |   .99    | | 99.81  | | 99.82   |
+          +----------+ +--------+ +---------+
+```
+
+This network graph shows:
+
+1. The host machine connected to the external network/internet.
+2. The NAT network (K8s-NATNetwork) providing a bridge between the internal network and the external network.
+3. The internal Hyper-V switch (k8s-Switch) connecting all the Kubernetes nodes.
+4. The master node and two worker nodes, each with their specific IP addresses, all connected to the internal switch.
