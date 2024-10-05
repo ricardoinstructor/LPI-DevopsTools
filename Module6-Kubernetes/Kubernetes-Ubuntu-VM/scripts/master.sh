@@ -50,4 +50,3 @@ EOF
 # Install Metrics Server
 
 kubectl apply -f https://raw.githubusercontent.com/techiescamp/kubeadm-scripts/main/manifests/metrics-server.yaml
-
