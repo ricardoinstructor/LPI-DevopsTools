@@ -54,6 +54,47 @@ Docker                    | 20.10.8
 Kubernetes                | 1.20.6-00
 
 
+## Ongoing Tests
+
+Tested on **September 22, 2024**:
+
+Steps during vagrant initialization for Kubernetes-Ubuntu-VM.
+```
+$ vagrant up
+```
+
+Connection and check to the controlplane
+```
+$ vagrant ssh controlplane
+$ ifconfig
+```
+![Kubernetes](images/K8SVMControlPlan.png)
+
+Deploying a Nginx service into the Cluster
+```
+$ kubectl apply -f https://raw.githubusercontent.com/scriptcamp/kubeadm-scripts/main/manifests/sample-app.yaml
+$ kubectl get services
+```
+![Kubernetes2](images/K8SVMControlPlan-Deploy-Nginx.png)
+![Kubernetes3](images/K8SVMControlPlan-Get-Service.png)
+
+Connection and check to the Target Node (Worker Node)
+```
+$ vagrant ssh node01
+```
+![Kubernetes4](images/K8SVMTargetNode.png)
+
+Getting all Pods and Services running into the Target Node (Worker Node)
+```
+$ kubectl get pods
+$ kubectl get svc
+
+```
+![Kubernetes5](images/K8SVMTargetNode-Get-Pods.png)
+![Kubernetes6](images/K8SVMTargetNode-Get-Service.png)
+
+
+
 ## Issues and troubleshooting
 
 - If you have an connection timeout when booting the VM and an error on type "kernel panic not syncing attempted to kill the idle task" on the console, it will be necessary to upgrade the number of CPU on Vagrantfile (Example : From 1 to 2)
