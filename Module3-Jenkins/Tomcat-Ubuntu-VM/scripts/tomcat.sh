@@ -5,7 +5,7 @@
 ### Link: https://www.digitalocean.com/community/tutorials/how-to-install-apache-tomcat-8-on-centos-7
 ## Var definitions
 # Check the updated version here -> https://dlcdn.apache.org/tomcat/tomcat-9
-TOMCAT_VERSION="9.0.93"
+TOMCAT_VERSION="9.0.100"
 
 
 ## First install wget
@@ -24,12 +24,13 @@ echo "Installing java"
 groupadd tomcat && useradd -M -s /bin/nologin -g tomcat -d /usr/local/tomcat tomcat
 
 cd /usr/local/
-wget --header 'Cookie: oraclelicense=a' http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jre-8u131-linux-x64.tar.gz > /dev/null 2>&1
-tar -xf jre-8u131-linux-x64.tar.gz && rm -f jre-8u131-linux-x64.tar.gz
-mv jre1.8.0_131 java
-
+#wget --header 'Cookie: oraclelicense=a' http://download.oracle.com/otn-pub/java/jdk/8u131-b11/d54c1d3a095b4ff2b6607d096fa80163/jre-8u131-linux-x64.tar.gz > /dev/null 2>&1
+#tar -xf jre-8u131-linux-x64.tar.gz && rm -f jre-8u131-linux-x64.tar.gz
+#mv jre1.8.0_131 java
+# INstalción de openjdk 17 para que sea la misma que jenkins
+sudo apt-get install openjdk-17-jdk -y
  
-echo 'JAVA_HOME=/usr/local/java
+echo 'JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 export JAVA_HOME
 PATH=$PATH:$JAVA_HOME/bin
 export PATH' >> /etc/profile
@@ -69,7 +70,7 @@ Description=Apache Tomcat Web Application Container
 After=syslog.target network.target
 [Service]
 Type=forking
-Environment=JAVA_HOME=/usr/local/java
+Environment=JAVA_HOME=/usr/lib/jvm/java-17-openjdk-amd64
 Environment=CATALINA_PID=/usr/local/tomcat/temp/tomcat.pid
 Environment=CATALINA_HOME=/usr/local/tomcat
 Environment=CATALINA_BASE=/usr/local/tomcat
@@ -93,7 +94,7 @@ echo '
    <role rolename="admin-gui"/>
    <role rolename="manager-gui"/>
    <role rolename="manager-script"/>
-   <user username="admin" password="adminpassword" roles="admin-gui,manager-gui,manager-script"/>
+   <user username="admin" password="qwerty" roles="admin-gui,manager-gui,manager-script"/>
 </tomcat-users>' > /usr/local/tomcat/conf/tomcat-users.xml
 
 echo '
